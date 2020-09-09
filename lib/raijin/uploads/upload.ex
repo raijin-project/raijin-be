@@ -15,7 +15,7 @@ defmodule Raijin.Uploads.Upload do
   @doc false
   def changeset(upload, attrs) do
     upload
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:creator_id, :path])
+    |> validate_required([:path])
   end
 end
