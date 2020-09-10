@@ -15,7 +15,7 @@ defmodule Raijin.Repo.Migrations.CreateBaseTables do
 
     create table("uploads", primary_key: false) do
       add :id, :uuid, primary_key: true
-      add :creator_id, references("users", type: :uuid)
+      add :user_id, references("users", type: :uuid)
       add :path, :text
 
       timestamps()

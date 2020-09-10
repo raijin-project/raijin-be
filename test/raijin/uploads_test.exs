@@ -19,7 +19,7 @@ defmodule Raijin.UploadsTest do
       {:ok, user} = Raijin.Users.create_user(user_attrs)
 
       %{
-        creator_id: user.id,
+        user_id: user.id,
         path: "epic/upload/path"
       }
     end

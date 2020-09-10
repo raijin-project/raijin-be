@@ -6,7 +6,7 @@ defmodule Raijin.Uploads.Upload do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "uploads" do
-    belongs_to :creator, User
+    belongs_to :user, User
     field :path, :string
 
     timestamps()
@@ -15,7 +15,7 @@ defmodule Raijin.Uploads.Upload do
   @doc false
   def changeset(upload, attrs) do
     upload
-    |> cast(attrs, [:creator_id, :path])
+    |> cast(attrs, [:user_id, :path])
     |> validate_required([:path])
   end
 end

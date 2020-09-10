@@ -10,6 +10,8 @@ defmodule Raijin.Users.User do
     field :password_hash, :string
     field :password, :string, virtual: true
 
+    has_many :uploads, Raijin.Uploads.Upload
+
     timestamps()
   end
 
