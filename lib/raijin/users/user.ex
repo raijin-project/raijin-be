@@ -30,7 +30,7 @@ defmodule Raijin.Users.User do
 
   def update_changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password_hash, :admin])
+    |> cast(attrs, [:email, :password])
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 5, max: 50)
     |> put_pass_hash()
