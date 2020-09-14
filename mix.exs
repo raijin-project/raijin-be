@@ -10,7 +10,11 @@ defmodule Raijin.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      # Docs
+      name: "Raijin",
+      source_url: "https://github.com/raijin-project/raijin-be",
+      homepage_url: "https://raijin-project.github.io"
     ]
   end
 
@@ -43,7 +47,8 @@ defmodule Raijin.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:pbkdf2_elixir, "~> 1.2"}
+      {:pbkdf2_elixir, "~> 1.2"},
+      {:ex_doc, "~> 0.22", only: :dev, runtime: false}
     ]
   end
 
