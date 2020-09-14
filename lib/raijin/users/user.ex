@@ -21,6 +21,7 @@ defmodule Raijin.Users.User do
     user
     |> cast(attrs, [:username, :email, :password, :admin])
     |> validate_required([:username, :email, :password])
+    |> unique_constraint(:username)
     |> validate_length(:username, min: 3, max: 50)
     |> validate_length(:password, min: 5, max: 50)
     |> validate_format(:email, ~r/@/)

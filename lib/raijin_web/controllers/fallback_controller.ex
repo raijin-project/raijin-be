@@ -21,6 +21,13 @@ defmodule RaijinWeb.FallbackController do
     |> render(:"403")
   end
 
+  def call(conn, {:error, :invalid_credentials}) do
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(RaijinWeb.ErrorView)
+    |> render(:"401")
+  end
+
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(422)
