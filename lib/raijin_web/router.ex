@@ -7,6 +7,8 @@ defmodule RaijinWeb.Router do
 
   scope "/api", RaijinWeb do
     pipe_through :api
+
+    resources "/users", UserController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
