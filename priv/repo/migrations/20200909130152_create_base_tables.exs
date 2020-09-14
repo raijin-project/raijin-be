@@ -9,6 +9,7 @@ defmodule Raijin.Repo.Migrations.CreateBaseTables do
       add :username, :citext, null: false
       add :email, :citext, null: false
       add :password_hash, :text
+      add :admin, :boolean
 
       timestamps()
     end

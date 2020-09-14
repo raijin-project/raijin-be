@@ -3,9 +3,12 @@ defmodule Raijin.Users do
   The Users context.
   """
 
+  @behaviour Bodyguard.Policy
+
   import Ecto.Query, warn: false
   alias Raijin.Repo
 
+  alias Raijin.Users
   alias Raijin.Users.User
 
   @doc """
@@ -36,6 +39,8 @@ defmodule Raijin.Users do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
+
+  def get_by_username!(username), do: Repo.get_by(User, username: username)
 
   @doc """
   Creates a user.
@@ -100,5 +105,35 @@ defmodule Raijin.Users do
   """
   def change_user(%User{} = user, attrs \\ %{}) do
     User.update_changeset(user, attrs)
+  end
+
+  def verify_user(username, password) do
+    with %User{} = user <- Users.get_by_username!(username) do
+      if Pbkdf2.verify_pass(password, user.password_hash) do
+        {:ok, user}
+      else
+        {:error, :invalid_credentials}
+      end
+    else
+      _e -> Pbkdf2.no_user_verify()
+        {:error, :invalid_credentials}
+    end
+  end
+
+  def authorize(_, nil, _), do: :error
+
+  def authorize(:list_users, user, _) do
+    cond do
+      user.admin == true -> :ok
+      true -> :error
+    end
+  end
+
+  def authorize(:update_user, user, updated_user) do
+    cond do
+      user.admin == true -> :ok
+      user.id == updated_user.id -> :ok
+      true -> :error
+    end
   end
 end

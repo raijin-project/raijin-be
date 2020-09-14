@@ -3,11 +3,16 @@ defmodule RaijinWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
+    plug :protect_from_forgery
+    plug RaijinWeb.Plugs.AuthPlug
   end
 
   scope "/api", RaijinWeb do
     pipe_through :api
 
+    post "/login", SessionController, :login
+    post "/logout", SessionController, :logout
     resources "/users", UserController, except: [:new, :edit]
   end
 

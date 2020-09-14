@@ -7,7 +7,8 @@ defmodule RaijinWeb.UserControllerTest do
   @create_attrs %{
     username: "kawen",
     email: "kawen@imkawen",
-    password: "imkawen"
+    password: "imkawen",
+    admin: true
   }
   @update_attrs %{
     email: "notkawen@imkawen",
@@ -28,9 +29,14 @@ defmodule RaijinWeb.UserControllerTest do
   end
 
   describe "index" do
+    setup [:create_user]
+
     test "lists all users", %{conn: conn} do
-      conn = get(conn, Routes.user_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
+      conn =
+        post(conn, "/api/login", %{username: "kawen", password: "imkawen"})
+        |> get(Routes.user_path(conn, :index))
+
+      assert length(json_response(conn, 200)["data"]) == 1
     end
   end
 
@@ -56,7 +62,10 @@ defmodule RaijinWeb.UserControllerTest do
     setup [:create_user]
 
     test "renders user when data is valid", %{conn: conn, user: %User{id: id} = user} do
-      conn = put(conn, Routes.user_path(conn, :update, user), user: @update_attrs)
+      conn =
+        post(conn, "/api/login", %{username: "kawen", password: "imkawen"})
+        |> put(Routes.user_path(conn, :update, user), user: @update_attrs)
+
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
       conn = get(conn, Routes.user_path(conn, :show, id))
@@ -67,7 +76,10 @@ defmodule RaijinWeb.UserControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do
-      conn = put(conn, Routes.user_path(conn, :update, user), user: @invalid_attrs)
+      conn =
+        post(conn, "/api/login", %{username: "kawen", password: "imkawen"})
+        |> put(Routes.user_path(conn, :update, user), user: @invalid_attrs)
+
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -76,7 +88,10 @@ defmodule RaijinWeb.UserControllerTest do
     setup [:create_user]
 
     test "deletes chosen user", %{conn: conn, user: user} do
-      conn = delete(conn, Routes.user_path(conn, :delete, user))
+      conn =
+        post(conn, "/api/login", %{username: "kawen", password: "imkawen"})
+        |> delete(Routes.user_path(conn, :delete, user))
+
       assert response(conn, 204)
 
       assert_error_sent 404, fn ->

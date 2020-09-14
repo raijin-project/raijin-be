@@ -48,6 +48,7 @@ defmodule Raijin.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:pbkdf2_elixir, "~> 1.2"},
+      {:bodyguard, "~> 2.4"},
       {:ex_doc, "~> 0.22", only: :dev, runtime: false}
     ]
   end

@@ -14,6 +14,13 @@ defmodule RaijinWeb.FallbackController do
     |> render(:"404")
   end
 
+  def call(conn, {:error, :unauthorized}) do
+    conn
+    |> put_status(:forbidden)
+    |> put_view(RaijinWeb.ErrorView)
+    |> render(:"403")
+  end
+
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(422)

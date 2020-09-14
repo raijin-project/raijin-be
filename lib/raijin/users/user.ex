@@ -9,6 +9,7 @@ defmodule Raijin.Users.User do
     field :email, :string
     field :password_hash, :string
     field :password, :string, virtual: true
+    field :admin, :boolean
 
     has_many :uploads, Raijin.Uploads.Upload
 
@@ -18,7 +19,7 @@ defmodule Raijin.Users.User do
   @doc false
   def create_changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :email, :password])
+    |> cast(attrs, [:username, :email, :password, :admin])
     |> validate_required([:username, :email, :password])
     |> validate_length(:username, min: 3, max: 50)
     |> validate_length(:password, min: 5, max: 50)
@@ -29,7 +30,7 @@ defmodule Raijin.Users.User do
 
   def update_changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password_hash])
+    |> cast(attrs, [:email, :password_hash, :admin])
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 5, max: 50)
     |> put_pass_hash()
