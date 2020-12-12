@@ -1,4 +1,6 @@
-# Raijin
+# Raijin 
+
+A self hosteable cloud file sharing solution. 
 
 To start your Phoenix server:
 
